@@ -56,7 +56,14 @@ class TestRFC3046(unittest.TestCase):
     exp_ci_vlan = 1998
     exp_ci_port = 21
     exp_ri_mac  = [17, 34, 51, 68, 85, 102]
+
     exp_list    = [1, 6, 0, 4, 7, 206, 0, 21, 2, 8, 0, 6, 17, 34, 51, 68, 85, 102]
+
+    o82_short = []
+    o82_malformed = [1, 6, 0, 4, 7, 206, 0, 21, 2, 8, 0, 6, 17, 34, 51, 68, 85, 102, 255]
+    o82_malformed = range(100)
+
+    o82_str  = [1, 6, 0, 4, 7, 208, 0, 3, 2, 19, 1, 17, 57, 48, 45, 57, 52, 45, 69, 52, 45, 52, 49, 45, 69, 52, 45, 67, 48]
 
     def setUp(self):
         self.rfc3046 = RFC3046(self.exp_list)
@@ -69,6 +76,16 @@ class TestRFC3046(unittest.TestCase):
         self.assertEqual(port, self.exp_ci_port)
         self.assertEqual(mac, self.exp_ri_mac)
 
+        self.assertRaises(ValueError, RFC3046, self.o82_short)
+        self.assertRaises(ValueError, RFC3046, self.o82_malformed)
+
+
+    def testPerformance(self):
+        import timeit
+
+        print timeit.timeit('o82 = RFC3046(exp_list); o82.AgentRemoteId; o82.AgentCircuitId',
+                            'from isdhcplib.type_rfc import RFC3046; exp_list = [1, 6, 0, 4, 7, 206, 0, 21, 2, 8, 0, 6, 17, 34, 51, 68, 85, 102]; ',
+                            number=100000)
 
 if __name__ == "__main__":
     unittest.main()

@@ -30,8 +30,6 @@ from type_rfc import *
 class DHCP_DECODER(object):
     def decode(self, type_spec, data, data_len):
         if type_spec not in self._type_map:
-            print "No decoder for spec: %s" % type_spec
-
             return data[:data_len]
 
         decoder = self._type_map[type_spec]
@@ -116,9 +114,9 @@ class DHCP_DECODER(object):
         "ipv4+":  _decode_ipv4_plus,
         "string": _decode_string,
         "32-bits": _decode_32_bits,
-        "RFC3046": _decode_rfc3046,
-        "RFC3442": _decode_rfc3442,
-        "RFC4702": _decode_rfc4702,
+        #"RFC3046": _decode_rfc3046,
+        #"RFC3442": _decode_rfc3442,
+        #"RFC4702": _decode_rfc4702,
     }
 
     _spec_map = {
@@ -128,9 +126,9 @@ class DHCP_DECODER(object):
         "ipv4+":  [0, 4 ,4],
         "32-bits": [4, 4, 0],
         "string": [0, 0, 1],
-        "RFC3046": None,
-        "RFC3442": None,
-        "RFC4702": [0, 3, 1],
+        #"RFC3046": None,
+        #"RFC3442": None,
+        #"RFC4702": [0, 3, 1],
     }
 
 
